@@ -18,26 +18,94 @@ map_state(State) ->
 	   "off"
    end.
 
+
+add_alarm_cell(_Id, []) ->
+    [];
+add_alarm_cell(Id, _AlarmList) ->
+    Element = #tablecell { 
+		 align=right,
+		 valign=bottom,
+		 body =[
+			#button { 
+			   id=list_to_atom("button_" ++ integer_to_list(Id)),
+			   click=#toggle{target=list_to_atom("alarm_menu" ++ integer_to_list(Id))},
+			%%			   postback={click, list_to_atom("button_" ++ integer_to_list(Id)), Id} ,
+			   data_fields=[{icon, 'arrow-d'},
+			   		{mini, true},
+			   		{inline, true},
+			   		{theme, c},
+			   		{iconpos, notext}]
+			  }
+		       ]},
+    Element.
+
+
+
+add_alarm_menu(_Id, []) ->
+    [];
+add_alarm_menu(Id, AlarmList) ->
+    Element = 	#mobile_list{
+		   id=list_to_atom("alarm_menu" ++ integer_to_list(Id)),
+		   theme=a,
+		   inset=true,
+		   style="display:none",
+		   body=[#mobile_list_divider{class=c, text="Timers"}] ++ create_alarms(AlarmList, [])
+		  },
+    Element.
+
+create_alarms([], Acc) ->
+    Acc;
+
+create_alarms([Head|Tail], Acc) ->
+
+    {Cmd, {H,M,S}} = Head,
+    Element = #mobile_listitem{
+		 theme=c,
+		 body=   #mobile_grid { 
+			    columns=2,
+			    blocks=[
+				    #mobile_grid_block{ text=Cmd },
+				    #mobile_grid_block{ text=io_lib:format("at ~p:~p:~p", [H,M,S])}]
+			   }
+		},
+    
+    create_alarms(Tail, [Element|Acc]).
+
 create_device([], Acc) ->
     Acc;
 
 create_device([Head|Tail], Acc) ->
 
-    {Id, Name, _AlarmList} = Head,   
+    {Id, Name, AlarmList} = Head,   
     Device = tellstick_server:get_device(Id),
+
+    
     
     ListElement = [#label { text=Name, html_encode=true },
-		   #mobile_toggle{
-		      on_text="on",
-		      off_text="off",
-		      selected=map_state(Device#device.state),
-		      postback=Id,
-		      id=list_to_atom("device_" ++ integer_to_list(Id)),
-		      width=100
-		     },
+		   #table { rows=[
+				  #tablerow { 
+				     cells=[
+					    #tablecell { 
+					       body =[
+						      #mobile_toggle{
+							 on_text="on",
+							 off_text="off",
+							 selected=map_state(Device#device.state),
+							 postback=Id,
+							 id=list_to_atom("device_" ++ integer_to_list(Id)),
+							 width=100
+							}]},
+					    add_alarm_cell(Id, AlarmList),
+					    add_alarm_menu(Id, AlarmList)
+					    
+					   ]
+				    }
+				 ]
+			  },
+		   
 		   #hr{}],
     create_device(Tail, [ListElement|Acc]).
-			 
+
 
 create_temperature([], Acc) ->
     Acc;
@@ -75,12 +143,12 @@ create_humidity([Head|Tail], Acc) ->
 
     {Id, Name} = Head,
     H = tellstick_server:get_humidity(Id),
-
+    
     case H of
 	not_found ->
 	    create_humidity(Tail, Acc);
 	_ ->
-
+	    
 	    Diff = timer:now_diff(erlang:now(), H#humidity.last_update_time)/1000000,
 	    
 	    ListElement = [#mobile_listitem{
@@ -139,13 +207,15 @@ event(Id)
     SendCmd = wf:q(IdAtom),
     tellstick_server:device(Id, list_to_atom(SendCmd));
 
-event({click, goButton}) ->
-    ShowMenu = wf:q(checkbox1),
+event({click, Button, Id}) ->
+    ShowMenu = wf:q(Button),
+    
+    Menu = wf:q(list_to_atom("alarm_menu" ++ integer_to_list(Id))),
+    io:format("ShowMenu ~p for button ~p menu ~p~n", [ShowMenu, Button, Menu]),
     case ShowMenu of
-        "on" -> wf:wire(menu,#appear{});
-        "off" -> wf:wire(menu,#fade{})
+        "on" -> wf:wire(list_to_atom("alarm_menu" ++ integer_to_list(Id)),#slide_down{});
+        _Other -> wf:wire(list_to_atom("alarm_menu" ++ integer_to_list(Id)),#slide_up{})
     end;
-    
-event(Other) ->
-    
+
+event(Other) ->    
     io:format("Other ~p~n", [Other]).
