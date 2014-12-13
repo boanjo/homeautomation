@@ -35,8 +35,8 @@ init([]) ->
     {ok, DocRoot} = application:get_env(cowboy, document_root),
     {ok, StaticPaths} = application:get_env(cowboy, static_paths),
 
-    io:format("Starting Cowboy Server (~s) on ~s:~p, root: '~s'~n",
-              [ServerName, BindAddress, Port, DocRoot]),
+    error_logger:info_msg("Starting Cowboy Server (~s) on ~s:~p, root: '~s'~n",
+			  [ServerName, BindAddress, Port, DocRoot]),
     
     Dispatch = init_dispatch(DocRoot, StaticPaths),
     {ok, _} = cowboy:start_http(http, 100, [{port, Port}], [

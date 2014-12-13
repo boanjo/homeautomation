@@ -10,7 +10,10 @@ skip-deps: get-deps compile
 	./rebar skip_deps=true
 
 run:
-	erl -pa ebin/ deps/*/ebin/ -config etc/cowboy.config -config etc/homeautomation.config -config etc/app.config -eval "application:start(tellstick)" -eval "application:start(homeautomation)" -eval "nitrogen_sup:start_link()"
+	erl -pa ebin/ deps/*/ebin/ -config etc/cowboy.config -config etc/homeautomation.config -config etc/app.config -eval "application:start(sasl)" -eval "application:start(txrx)" -eval "application:start(homeautomation)" -eval "nitrogen_sup:start_link()" -sname boan -setcookie hej -detached
+
+attach:
+	erl -sname attach -setcookie hej -remsh boan@raspberrypi
 
 
 

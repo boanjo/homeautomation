@@ -10,7 +10,8 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    homeautomation_sup:start_link().
+    homeautomation_sup:start_link(),
+    mysql_sup:start_link().
 
 stop(_State) ->
     ok.

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>[[[page:title()]]]</title>
+    <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta http-equiv="refresh" content="60" >
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="/nitrogen/nitrogen.css" charset='utf-8'></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+
+    <script type="text/javascript" src="/nitrogen/jquery.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+    <script type="text/javascript" src="/nitrogen/bert.js"></script>
+    <script src='/nitrogen/livevalidation.js' type='text/javascript' charset='utf-8'></script>
+    <script src='/nitrogen/nitrogen.js' type='text/javascript' charset='utf-8'></script>
+    <script src='/nitrogen/nitrogen_jqm.js' type='text/javascript' charset='utf-8'></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    <script type="text/javascript">
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Date');
+      data.addColumn('number', 'Regn i mm');
+      data.addColumn('number', 'Temp max');
+      data.addColumn('number', 'Temp min');
+      data.addColumn({id:'i0', type:'number', role:'interval'});
+      data.addColumn({id:'i0', type:'number', role:'interval'});
+      
+      data.addRows([
+      [[[page:get_last_week()]]]
+      ]);
+      
+      
+    var options = {
+      title:'Temperatur (min,max) och Regn senaste veckan',
+      curveType:'function',
+      interval: {
+         'i0': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+      },
+      series:{
+        0:{title: "mm", targetAxisIndex:0, type: 'bars'},
+        1:{targetAxisIndex:1, type: 'line', pointSize: '10'},
+        2:{title: "temp", targetAxisIndex:1, type: 'line', pointSize: '10'}
+      },
+      axes: {
+        y: {
+          rain: {label: "mm"}, // Left y-axis.
+          temp: {side: 'right', label: "C"} // Right y-axis.
+        }
+      }
+      
+      
+      };
+      
+      var chart_lines = new google.visualization.ColumnChart(document.getElementById('chart_lines'));
+      chart_lines.draw(data, options);
+      }
+    </script>
+
+
+    <style>
+      #nav {
+      line-height:30px;
+      background-color:#eeeeee;
+      height:300px;
+      width:100px;
+      float:left;
+      padding:5px;      
+      }
+      #section {
+      width:350px;
+      float:left;
+      padding:10px;  
+      }  
+    </style>
+</head>
+<body>
+  <div data-role="page" id="pagediv" data-code="[[[mobile_script]]]">
+    <div data-role="header"> 
+      <h1>[[[page:title()]]]</h1> 
+    </div> 
+    
+    [[[page:body()]]]
+    <div id="chart_lines" style="height: 380px;"></div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"></div>
+      <div class="ui-block-b">   
+      </div>
+</div><!-- /grid-a -->
+    <div data-role="footer"> 
+      <h4>
+	&copy; 2014 - Anders Johansson
+      </h4> 
+    </div>
+  </div>
+</body>
+</html>

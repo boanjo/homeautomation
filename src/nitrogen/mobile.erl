@@ -1,7 +1,7 @@
 %% -*- mode: nitrogen -*-
 %% vim: ts=4 sw=4 et
 -module(mobile).
--include_lib("tellstick/include/tellstick.hrl").
+-include_lib("txrx/include/txrx.hrl").
 -include_lib("nitrogen_core/include/wf.hrl").
 -compile(export_all).
 -author("Anders Johansson (epkboan@gmail.com)").
@@ -9,6 +9,20 @@
 main() -> #template{file="./priv/templates/mobile.html"}.
 
 title() -> "Oxelgatan 7".
+
+
+
+xmlencode([], Acc) -> Acc; 
+xmlencode([$<|T], Acc) -> xmlencode(T, Acc ++ "&lt;"); % euro symbol
+xmlencode([$å|T], Acc) -> xmlencode(T, Acc ++ "&aring;");
+xmlencode([$ä|T], Acc) -> xmlencode(T, Acc ++ "&auml;");
+xmlencode([$ö|T], Acc) -> xmlencode(T, Acc ++ "&ouml;");
+xmlencode([$Å|T], Acc) -> xmlencode(T, Acc ++ "&Aring;");
+xmlencode([$Ä|T], Acc) -> xmlencode(T, Acc ++ "&Auml;");
+xmlencode([$Ö|T], Acc) -> xmlencode(T, Acc ++ "&Ouml;");
+xmlencode([226,130,172|T], Acc) -> xmlencode(T, Acc ++ "&#8364;");
+xmlencode([OneChar|T], Acc) -> xmlencode(T, lists:flatten([Acc,OneChar])). 
+
 
 map_state(State) ->
    case State of
@@ -76,12 +90,14 @@ create_device([], Acc) ->
 
 create_device([Head|Tail], Acc) ->
 
-    {Id, Name, AlarmList} = Head,   
-    Device = tellstick_server:get_device(Id),
+    {Id, Address, Unit, Name, AlarmList} = Head,   
+    txrx_server:set_device_info(Address, Unit, Id),    
 
-    
-    
-    ListElement = [#label { text=Name, html_encode=true },
+    Device = txrx_server:get_device(Id),
+
+    NewName = xmlencode(Name, []),
+
+    ListElement = [#label { text=NewName, html_encode=false },
 		   #table { rows=[
 				  #tablerow { 
 				     cells=[
@@ -90,6 +106,7 @@ create_device([Head|Tail], Acc) ->
 						      #mobile_toggle{
 							 on_text="on",
 							 off_text="off",
+
 							 selected=map_state(Device#device.state),
 							 postback=Id,
 							 id=list_to_atom("device_" ++ integer_to_list(Id)),
@@ -112,14 +129,14 @@ create_temperature([], Acc) ->
 
 create_temperature([Head|Tail], Acc) ->
 
-    {Id, Name} = Head,
-    T = tellstick_server:get_temperature(Id),
+    {_, {Id, Name}} = Head,
+    T = txrx_server:get_sensor(Id),
 
     case T of
 	not_found ->
 	    create_temperature(Tail, Acc);
 	_ ->
-	    Diff = timer:now_diff(erlang:now(), T#temperature.last_update_time)/1000000,
+	    Diff = timer:now_diff(erlang:now(), T#sensor.last_update_time)/1000000,
 	    
 	    ListElement = [#mobile_listitem{
 			      theme=c,
@@ -127,7 +144,7 @@ create_temperature([Head|Tail], Acc) ->
 					 columns=3,
 					 blocks=[
 						 #mobile_grid_block{ text=Name },
-						 #mobile_grid_block{ text=io_lib:format("~.1fC",[T#temperature.value]) },
+						 #mobile_grid_block{ body=[#label{text=io_lib:format("~.1f&deg;C",[T#sensor.value]), html_encode=false}] },
 						 #mobile_grid_block{ text=io_lib:format("Updated ~.1f sec ago", [Diff])}
 						]
 					}
@@ -135,21 +152,22 @@ create_temperature([Head|Tail], Acc) ->
 	    
 	    create_temperature(Tail, [ListElement|Acc])
     end.
+
 			 
 create_humidity([], Acc) ->
     Acc;
 
 create_humidity([Head|Tail], Acc) ->
 
-    {Id, Name} = Head,
-    H = tellstick_server:get_humidity(Id),
+    {_, {Id, Name}} = Head,
+    H = txrx_server:get_sensor(Id),
     
     case H of
 	not_found ->
 	    create_humidity(Tail, Acc);
 	_ ->
 	    
-	    Diff = timer:now_diff(erlang:now(), H#humidity.last_update_time)/1000000,
+	    Diff = timer:now_diff(erlang:now(), H#sensor.last_update_time)/1000000,
 	    
 	    ListElement = [#mobile_listitem{
 			      theme=c,
@@ -157,13 +175,42 @@ create_humidity([Head|Tail], Acc) ->
 					 columns=3,
 					 blocks=[
 						 #mobile_grid_block{ text=Name },
-						 #mobile_grid_block{ text=io_lib:format("~.1f%",[H#humidity.value]) },
+						 #mobile_grid_block{ text=lists:flatten(integer_to_list(H#sensor.value) ++ "%")},
 						 #mobile_grid_block{ text=io_lib:format("Updated ~.1f sec ago", [Diff])}
 						]
 					}
 			     }],
 	    
 	    create_humidity(Tail, [ListElement|Acc])
+    end.
+			 
+create_rain([], Acc) ->
+    Acc;
+
+create_rain([Head|Tail], Acc) ->
+
+    {out, {Id, Name}} = Head,
+    H = txrx_server:get_sensor(Id),
+    
+    case H of
+	not_found ->
+	    create_rain(Tail, Acc);
+	_ ->
+	    
+	    Diff = timer:now_diff(erlang:now(), H#sensor.last_update_time)/1000000, 
+	    ListElement = [#mobile_listitem{
+			      theme=c,
+			      body=   #mobile_grid { 
+					 columns=3,
+					 blocks=[
+						 #mobile_grid_block{ text=Name },
+						 #mobile_grid_block{ text=io_lib:format("~.1f mm",[H#sensor.value])},
+						 #mobile_grid_block{ text=io_lib:format("Updated ~.1f sec ago", [Diff])}
+						]
+					}
+			     }],
+	    
+	    create_rain(Tail, [ListElement|Acc])
     end.
 			 
 
@@ -174,6 +221,7 @@ body() ->
     {ok, WantedDeviceList} = application:get_env(homeautomation, device),
     {ok, WantedTemperatureSensorList} = application:get_env(homeautomation, temperature),
     {ok, WantedHumiditySensorList} = application:get_env(homeautomation, humidity),
+    {ok, WantedRainSensorList} = application:get_env(homeautomation, rain),
 
     Elements = create_device(WantedDeviceList, []),
     
@@ -198,24 +246,33 @@ body() ->
 		      create_humidity(WantedHumiditySensorList, [])
 		 }
 	      ],
-    wf:f(Elements++TempList++HumList).
+    RainList = [#mobile_list{
+		   id=menu,
+		   theme=a,
+		   inset=true,
+		   %%    		style="display:none",
+		   body=[#mobile_list_divider{class=c, text="Regn"}] ++ 
+		       create_rain(WantedRainSensorList, [])
+		 }
+	      ],
+    wf:f(Elements ++ TempList ++ HumList ++ RainList).
 
 event(Id) 
   when is_integer(Id)->
     Device = "device_" ++ integer_to_list(Id),
     IdAtom = list_to_atom(Device),
     SendCmd = wf:q(IdAtom),
-    tellstick_server:device(Id, list_to_atom(SendCmd));
+    txrx_server:device(Id, list_to_atom(SendCmd));
 
 event({click, Button, Id}) ->
     ShowMenu = wf:q(Button),
     
     Menu = wf:q(list_to_atom("alarm_menu" ++ integer_to_list(Id))),
-    io:format("ShowMenu ~p for button ~p menu ~p~n", [ShowMenu, Button, Menu]),
+    error_logger:info_msg("ShowMenu ~p for button ~p menu ~p~n", [ShowMenu, Button, Menu]),
     case ShowMenu of
         "on" -> wf:wire(list_to_atom("alarm_menu" ++ integer_to_list(Id)),#slide_down{});
         _Other -> wf:wire(list_to_atom("alarm_menu" ++ integer_to_list(Id)),#slide_up{})
     end;
 
 event(Other) ->    
-    io:format("Other ~p~n", [Other]).
+    error_logger:info_msg("Other ~p~n", [Other]).

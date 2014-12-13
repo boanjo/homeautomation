@@ -1,0 +1,33 @@
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 38868 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 47868 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 37068 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 47868 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 33468 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 51468 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 73068 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting timer with tmo value 22668 secs
+
+=INFO REPORT==== 13-Dec-2014::19:42:12 ===
+Starting up mysql_server
+
+=INFO REPORT==== 13-Dec-2014::19:42:13 ===
+Starting Cowboy Server (nitrogen) on 0.0.0.0:3553, root: './priv/static'
+
+=ERROR REPORT==== 13-Dec-2014::19:42:14 ===
+Incorrect erlang term recd, skipping! 
