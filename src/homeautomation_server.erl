@@ -13,6 +13,10 @@ start_link() ->
 
 init([]) ->
     error_logger:logfile({open, "log/error_logger.txt"}),
+
+    txrx_server:log_terminal(off),
+    txrx_server:log_file(on, "log/txrx.txt"),
+
     case application:get_env(homeautomation, device) of
 	{ok, List} ->
 	    

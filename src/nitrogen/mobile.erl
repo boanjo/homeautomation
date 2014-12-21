@@ -8,7 +8,9 @@
 
 main() -> #template{file="./priv/templates/mobile.html"}.
 
-title() -> "Oxelgatan 7".
+title() ->     
+    {ok, Title} = application:get_env(homeautomation, title),
+    Title.
 
 
 
@@ -216,8 +218,7 @@ create_rain([Head|Tail], Acc) ->
 
 			 
 
-body() ->
-         
+body() ->         
     {ok, WantedDeviceList} = application:get_env(homeautomation, device),
     {ok, WantedTemperatureSensorList} = application:get_env(homeautomation, temperature),
     {ok, WantedHumiditySensorList} = application:get_env(homeautomation, humidity),

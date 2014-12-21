@@ -9,7 +9,9 @@
 
 main() -> #template{file="./priv/templates/weather.html"}.
 
-title() -> "Oxelgatan 7".
+title() -> 
+    {ok, Title} = application:get_env(homeautomation, title),
+    Title.
 
 footer() -> "&copy; 2014 - Anders Johansson".
     
@@ -95,11 +97,11 @@ body() ->
 				]},
 		       #tablerow { 
 			  cells=[
-				 #tablecell { body=#label { text=To2 ++ " - " ++ To3 ++ " (Min/Max)", html_encode=false}}
+				 #tablecell { body=#label { text=To2 ++ " - " ++ To3 ++ " (Min/Max idag)", html_encode=false}}
 				]},
 		       #tablerow { 
 			  cells=[
-				 #tablecell { body=#label { text=Ho2 ++ " - " ++ Ho3 ++ " (Min/Max)", html_encode=false}}
+				 #tablecell { body=#label { text=Ho2 ++ " - " ++ Ho3 ++ " (Min/Max idag)", html_encode=false}}
 				 
 				 
 				]}
@@ -120,6 +122,8 @@ body() ->
 		  }
 	       ],
 
+
+
     Rows2 = [#table { 
 		rows=[ 
 		       #tablerow { 
@@ -132,12 +136,12 @@ body() ->
 				]},
 		       #tablerow { 
 			  cells=[
-				 #tablecell { body=#label { text=Ti2 ++ " - " ++ Ti3 ++ " (Min/Max)", html_encode=false}}
+				 #tablecell { body=#label { text=Ti2 ++ " - " ++ Ti3 ++ " (Min/Max idag)", html_encode=false}}
 				]},
 		       
 		       #tablerow { 
 			  cells=[
-				 #tablecell { body=#label { text=Hi2 ++ " - " ++ Hi3 ++ " (Min/Max)", html_encode=false}}
+				 #tablecell { body=#label { text=Hi2 ++ " - " ++ Hi3 ++ " (Min/Max idag)", html_encode=false}}
 				 
 				 
 				]}
