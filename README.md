@@ -5,14 +5,15 @@ Home Automation for devices and sensors (using the txrx project) with web server
 ![Topology](https://github.com/epkboan/epkboan.github.io/blob/master/topology.png?raw=true "Topology")
 
 ##### Preparations
-1. Install erlang (on the rasberry pi):
+* Prepare the raspberry pi with basic needs. Your favorite editor etc
+* Install erlang (on the rasberry pi):
 Follow the instructions to download erlang-mini
 http://www.erlang-embedded.com/
 and you also need:
 ```
 sudo apt-get install erlang-dev erlang-edoc erlang-eunit
 ```
-2. Install the ino build system
+* Install the ino build system
 http://inotool.org/#installation
 
 ##### Get started
