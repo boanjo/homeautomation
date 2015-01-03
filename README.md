@@ -4,14 +4,18 @@ Home Automation for devices and sensors (using the txrx project) with web server
 
 ![Topology](https://github.com/epkboan/epkboan.github.io/blob/master/topology.png?raw=true "Topology")
 
-install erlang (rasberry pi):
+##### Preparations
+1. Install erlang (on the rasberry pi):
 Follow the instructions to download erlang-mini
 http://www.erlang-embedded.com/
 and you also need:
 ```
 sudo apt-get install erlang-dev erlang-edoc erlang-eunit
 ```
+2. Install the ino build system
+http://inotool.org/#installation
 
+##### Get started
 Clone this project and then navigate into the project and to "make". This will first download the other projects that homeautomation is depending on (web server, nitrogen webframework etc).
 ```
 git clone https://github.com/epkboan/homeautomation.git
@@ -21,8 +25,6 @@ make
 
 ##### Firmware
 Next you need to install the firmware for the arduino UNO
-First install the ino build system
-http://inotool.org/#installation
 
 ##### Compile the arduino firmware
 ```
