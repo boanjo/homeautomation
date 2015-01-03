@@ -22,5 +22,10 @@ ino build
 If all went good:
 ino upload
 
+![Topology](https://github.com/epkboan/epkboan.github.io/blob/master/topology.png?raw=true "Topology")
+
+![ss](https://github.com/epkboan/epkboan.github.io/blob/master/homeautomation_ss.jpg?raw=true "Screenshot weather")
+
+
 
 
