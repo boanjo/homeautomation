@@ -31,8 +31,9 @@ A simple 7" tablet (i use an Asus Memo Pad) is always on and displays the curren
 
 ### Screenshots of device contro
 I use a mixture of standard power outlets and own built to control garden sprinklers etc
-![ss1](https://github.com/epkboan/epkboan.github.io/blob/master/mobile1.png?raw=true "Screenshot mobile 1")
+![ss1](https://github.com/epkboan/epkboan.github.io/blob/master/mobile1.png "Screenshot mobile 1")
 
-![ss2](https://github.com/epkboan/epkboan.github.io/blob/master/mobile2.png?raw=true "Screenshot mobile 2")
+
+![ss2](https://github.com/epkboan/epkboan.github.io/blob/master/mobile2.png "Screenshot mobile 2")
 
 
