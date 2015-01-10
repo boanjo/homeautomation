@@ -50,12 +50,22 @@ ino upload
 
 ##### Ready to go!
 Update your ./homeautomation/etc/homeautomation.config with your personal settings. 
-Navigate back to the ./homeautomation directory and hit 'make run'. This will start the txrx, homeautomation, webserver etc. If you want the application to be executed automatically at startup then edit your /etc/rc.local and add the lines below.
+Navigate back to the ./homeautomation directory and hit 'make run'. This will start the txrx, homeautomation, webserver etc. 
+```
+cd /path/to/your/homeautomation/location/
+make run
+```
+
+If you want the application to be executed automatically at startup then edit your /etc/rc.local
 ```
 sudo nano /etc/rc.local
 ```
+and add the lines
+```
 cd /path/to/your/homeautomation/location/
 erl -pa ebin/ deps/*/ebin/ -config etc/cowboy.config -config etc/homeautomation.config -config etc/app.config -eval "application:start(sasl)" -eval "application:start(txrx)" -eval "application:start(homeautomation)" -eval "nitrogen_sup:start_link()" -sname boan -setcookie hej -detached
+```
+
 
 Open a webbrowser and navigate to the ip address of your rasberry PI (check with ifconfig)
 * 192.168.1.34:8080/weather - This will open the weather station page (as below)
