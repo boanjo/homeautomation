@@ -1,6 +1,6 @@
 %% -*- mode: nitrogen -*-
 %% vim: ts=4 sw=4 et
--module(weather).
+-module(portrait).
 -include_lib("txrx/include/txrx.hrl").
 -include_lib("nitrogen_core/include/wf.hrl").
 -include_lib ("nitrogen_core/include/google_chart.hrl").
@@ -8,7 +8,7 @@
 -author("Anders Johansson (epkboan@gmail.com)").
 
 main() ->
-    #template{file="./priv/templates/weather.html"}.
+    #template{file="./priv/templates/portrait.html"}.
 
 title() ->
 
@@ -35,13 +35,13 @@ body() ->
 
 
 temp_out() ->
-    utils:temp_out(100).
+    utils:temp_out(80).
 temp_in() ->
-    utils:temp_in(100).
+    utils:temp_in(80).
 rain() ->
-    utils:rain_with_clock(100).
-wind() ->
-    utils:wind(100).
+    utils:rain(80).
+clock() ->
+    utils:clock(80).
        
 
 get_last_week() ->

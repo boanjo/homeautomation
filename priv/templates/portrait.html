@@ -5,6 +5,7 @@
     <link rel="icon" type="image/png" href="/images/weather.png" />
     <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta http-equiv="refresh" content="60" >
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/nitrogen/nitrogen.css" charset='utf-8'></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
@@ -95,7 +96,7 @@
     	  [[[page:temp_out()]]]
 	</div>
 	<div class="ui-block-b">   
-    	  [[[page:temp_in()]]]
+    	  [[[page:rain()]]]
 	</div>
       </div><!-- /grid-a -->
 
@@ -103,27 +104,29 @@
 
 	<li data-role="list-divider">Temperatur Ute, min/max samt Regn senaste veckan</li>
 	<li>
-	  <div id="chart_lines" style="height:430px;"> </div> 
+	  <div id="chart_lines" style="height:250px;"> </div> 
 	</li>
       </ul>
       <div class="ui-grid-a">
 	<div class="ui-block-a">
-    	  [[[page:rain()]]]
+    	  [[[page:temp_in()]]]
 	</div>
 	<div class="ui-block-b">   
-    	  [[[page:wind()]]]
+    	  [[[page:clock()]]]
 	</div>
       </div><!-- /grid-a -->
-      
+
       <ul data-role="listview" data-inset="true">
 	
 	<li data-role="list-divider">Prognos</li>
-	<li> <div style="height:220px;">
-	    <iframe id="forecast_embed" type="text/html" style="float:left" frameborder="0" height="220" width="100%" src="[[[page:forecast()]]]"> 
+	<li> <div style="height:140px;">
+	    <iframe id="forecast_embed" type="text/html" style="float:left" frameborder="0" height="140" width="100%" src="[[[page:forecast()]]]"> 
 	    </iframe> 
 	  </div>
 	</li>
       </ul>
+   
+      
    
       <div data-role="footer"> 
 	<h4>

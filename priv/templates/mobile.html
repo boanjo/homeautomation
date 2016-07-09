@@ -1,35 +1,125 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>[[[page:title()]]]</title>
-		<meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"> 
-		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <head>
+    <title>[[[page:title()]]]</title>
+    <link rel="icon" type="image/png" href="/images/weather.png" />
+    <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta http-equiv="refresh" content="60" >
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="/nitrogen/nitrogen.css" charset='utf-8'></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+
+    <script type="text/javascript" src="/nitrogen/jquery.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+    <script type="text/javascript" src="/nitrogen/bert.js"></script>
+    <script src='/nitrogen/livevalidation.js' type='text/javascript' charset='utf-8'></script>
+    <script src='/nitrogen/nitrogen.js' type='text/javascript' charset='utf-8'></script>
+    <script src='/nitrogen/nitrogen_jqm.js' type='text/javascript' charset='utf-8'></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Date');
+      data.addColumn('number', 'Regn i mm');
+      data.addColumn('number', 'Temp (ute) max');
+      data.addColumn('number', 'Temp (ute) min');
+      data.addColumn({id:'i0', type:'number', role:'interval'});
+      data.addColumn({id:'i0', type:'number', role:'interval'});
+      
+      data.addRows([
+      [[[page:get_last_week()]]]
+      ]);
+      
+      
+    var options = {
+      curveType:'function',
+      interval: {
+         'i0': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+      },
+      series:{
+        0:{title: "mm", targetAxisIndex:0, type: 'bars'},
+        1:{targetAxisIndex:1, type: 'line', pointSize: '10'},
+        2:{title: "temp", targetAxisIndex:1, type: 'line', pointSize: '10'}
+      },
+
+      vAxes: {0: {format: "#.# mm"}, 
+              1: {format: "# °C"} },
+      axes: {
+        y: {
+          rain: {title: "mm"}, // Left y-axis.
+          temp: {title: 'right', label: "C"} // Right y-axis.
+        }
+      }
+      };
+      
+      var chart_lines = new google.visualization.LineChart(document.getElementById('chart_lines'));
+      chart_lines.draw(data, options);
+      }
+    </script>
 
 
-		<script type="text/javascript" src="/nitrogen/jquery.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-		<script type="text/javascript" src="/nitrogen/bert.js"></script>
-		<script src='/nitrogen/livevalidation.js' type='text/javascript' charset='utf-8'></script>
-		<script src='/nitrogen/nitrogen.js' type='text/javascript' charset='utf-8'></script>
-		<script src='/nitrogen/nitrogen_jqm.js' type='text/javascript' charset='utf-8'></script>
-		<link rel="stylesheet" href="/nitrogen/nitrogen.css" charset='utf-8'></script>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
-	</head>
-	<body>
-		<div data-role="page" id="pagediv" data-code="[[[mobile_script]]]">
-			<div data-role="header"> 
-				<h1>[[[page:title()]]]</h1> 
-			</div> 
 
-			<div data-role="content">
-				[[[page:body()]]]
-			</div>
+    <meta name="viewport" content="width=600, initial-scale=1.0">
+</head>
+<body>
+  <div data-role="page" id="pagediv" data-code="[[[mobile_script]]]">
+    
+      <div data-role="header"> 
+	<h1>[[[page:title()]]]</h1> 
+      </div> 
 
-			<div data-role="footer"> 
-				<h4>
-					&copy; 2014 - Anders Johansson
-				</h4> 
-			</div>
-		</div>
-	</body>
+      [[[page:body()]]]
+
+
+      <div class="ui-grid-a">
+	<div class="ui-block-a">
+    	  [[[page:temp_out()]]]
+	</div>
+	<div class="ui-block-b">   
+    	  [[[page:temp_in()]]]
+	</div>
+      </div><!-- /grid-a -->
+
+      <ul data-role="listview" data-inset="true">
+
+	<li data-role="list-divider">Temperatur Ute, min/max samt Regn senaste veckan</li>
+	<li>
+	  <div id="chart_lines" style="height:220px;padding:0px !important;"> </div> 
+	</li>
+      </ul>
+      <div class="ui-grid-a">
+	<div class="ui-block-a">
+    	  [[[page:rain()]]]
+	</div>
+	<div class="ui-block-b">   
+    	  [[[page:wind()]]]
+	</div>
+      </div><!-- /grid-a -->
+      
+      <ul data-role="listview" data-inset="true">
+	
+	<li data-role="list-divider">Prognos</li>
+	<li> <div style="height:220px;">
+	    <iframe id="forecast_embed" type="text/html" style="float:left;" frameborder="0" height="220" width="100%" src="[[[page:forecast()]]]"> 
+	    </iframe> 
+	  </div>
+	</li>
+      </ul>
+  
+  
+
+  
+  
+      <div data-role="footer"> 
+	<h4>
+	  [[[page:footer()]]]
+	</h4> 
+      </div>
+  </div>
+  
+</body>
 </html>

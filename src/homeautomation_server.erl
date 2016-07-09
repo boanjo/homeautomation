@@ -4,7 +4,7 @@
 
 -export([start_link/0]).
 
--export([init/1, handle_call/3, handle_cast/2, handle_info/2,
+-export([init/1, stop/0, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3, start_timers/2]).
 
 start_link() ->
@@ -12,8 +12,6 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 init([]) ->
-    error_logger:logfile({open, "log/error_logger.txt"}),
-
     txrx_server:log_terminal(off),
     txrx_server:log_file(on, "log/txrx.txt"),
 
@@ -29,6 +27,10 @@ init([]) ->
 	    ok
     end,
     {ok, []}.
+
+stop() ->
+    txrx_server:tab2file(),
+    init:stop().
 
 
 update_device_info([]) ->

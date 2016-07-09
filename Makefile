@@ -6,15 +6,14 @@ get-deps:
 compile:
 	./rebar compile
 
-skip-deps: get-deps compile
-	./rebar skip_deps=true
-
 run:
-	erl -pa ebin/ deps/*/ebin/ -config etc/cowboy.config -config etc/homeautomation.config -config etc/app.config -eval "application:start(sasl)" -eval "application:start(txrx)" -eval "application:start(homeautomation)" -eval "nitrogen_sup:start_link()" -sname boan -setcookie hej -detached
+	erl -pa ebin/ deps/*/ebin/ -config etc/cowboy.config -config etc/homeautomation.config -config etc/app.config -eval "application:start(sasl)" -eval "error_logger:logfile({open, \"log/error_logger.txt\"})" -eval "application:start(txrx)" -eval "application:start(homeautomation)" -eval "nitrogen_sup:start_link()" -sname boan -setcookie hej -detached
 
 attach:
 	erl -sname attach -setcookie hej -remsh boan@raspberrypi
 
+stop:
+	erl -sname attach -setcookie hej -eval "rpc:call(boan@raspberrypi, homeautomation_server, stop, [])" -eval "init:stop()"
 
 
 plugins:

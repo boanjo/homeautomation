@@ -122,7 +122,7 @@ upload(Id) ->
 	Date = get_date_str(Now),
 	Time = get_time_str(Now),
 	
-	{sensor, _, Value, _Prev, _Min, _Max, _Date, _Upd} = txrx_server:get_sensor(Id),
+	{sensor, _, Value, _Prev, _Min, _Max, _Date, _Battery, _Upd} = txrx_server:get_sensor(Id),
 
 	emysql:execute(homeautomation_pool, insert_sensor, [Id, 
 							    lists:flatten(Date), 
@@ -142,7 +142,7 @@ handle_call(_Request, _From, State) ->
     {reply, Reply, State}.
 
 handle_cast({start_timer, Id}, State) -> 
-    timer:send_after(1*60*1000, self(), {timeout, Id}),
+    timer:send_after(5*60*1000, self(), {timeout, Id}),
     {noreply, State};
 
 handle_cast(_Msg, State) ->
