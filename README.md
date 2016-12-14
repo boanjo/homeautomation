@@ -89,4 +89,8 @@ At the bottom of the page the current sensor values are displayed
 
 ![ss1](https://github.com/epkboan/epkboan.github.io/blob/master/homeautomation_1.JPG "The control centre")
 
+### A standard (cheap) 7" or 10" tablet for continous display
+
+![ss2](https://github.com/epkboan/epkboan.github.io/blob/master/end_result.jpg "End Result")
+
 
