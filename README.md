@@ -2,7 +2,7 @@ homeautomation
 ==============
 Home Automation for devices and sensors with web server interface in erlang
 
-![Topology](https://github.com/epkboan/epkboan.github.io/blob/master/topology.png?raw=true "Topology")
+![Topology](https://github.com/epkboan/boanjo.github.io/blob/master/topology.png?raw=true "Topology")
 
 The 433MHz network is maintained by an Arduino UNO using the https://github.com/epkboan/txrx project. It listens for sensors and power outlet commands from other sources (like remote controls) to keep the state of the devices. It sends commands to the power outlets (programmable timers or user controlled). The UNO is connected via serial (USB) interface to a raspberry PI. The UNO is just a dumb bitbanging slave and the PI has the control logic and device states. The rasberry PI is connected to my home router. I'm using wired connection based on previous experiences with rasberry PI wifi dongle hassle. 
 
@@ -76,21 +76,21 @@ Open a webbrowser and navigate to the ip address of your rasberry PI (check with
 A simple 7" tablet (i use an Asus Memo Pad) is always on and displays the current weather data (just like any other weather station). Once every minute a new query is made to the homautomation webserver (raspberry pi), the webpage is assembled dynamically with the latest info. The top part is from the local txrx device and the google chart diagram is from a mysql query (of past txrx data) 
 
 
-![ss](https://github.com/epkboan/epkboan.github.io/blob/master/homeautomation_ss.jpg?raw=true "Screenshot weather")
+![ss](https://github.com/epkboan/boanjo.github.io/blob/master/homeautomation_ss.jpg?raw=true "Screenshot weather")
 
 ### Screenshots of device control
 I use a mixture of standard power outlets and own built to control garden sprinklers etc. The devices are controlled either manually via the web interface as seen below or as programmable timers (see etc/homeautomation.config for a sample, but it is just a list of on/off times of any length).
 
 At the bottom of the page the current sensor values are displayed 
 
-![ss1](https://github.com/epkboan/epkboan.github.io/blob/master/mobile1.png "Screenshot mobile 1")
+![ss1](https://github.com/epkboan/boanjo.github.io/blob/master/mobile1.png "Screenshot mobile 1")
 
 ### Screenshot of the homeautomation control center
 
-![ss1](https://github.com/epkboan/epkboan.github.io/blob/master/homeautomation_1.JPG "The control centre")
+![ss1](https://github.com/epkboan/boanjo.github.io/blob/master/homeautomation_1.JPG "The control centre")
 
 ### A standard (cheap) 7" or 10" tablet for continous display
 
-![ss2](https://github.com/epkboan/epkboan.github.io/blob/master/end_result.jpg "End Result")
+![ss2](https://github.com/epkboan/boanjo.github.io/blob/master/end_result.jpg "End Result")
 
 
